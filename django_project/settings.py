@@ -91,8 +91,8 @@ DATABASES = {
 if 'RAILWAY_ENVIRONMENT_NAME' in os.environ:
     DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 else:
-    URL_EXTERNA_RAILWAY = "tu_DATABASE_PUBLIC_URL_aqui"
-    if URL_EXTERNA_RAILWAY != "tu_DATABASE_PUBLIC_URL_aqui":
+    URL_EXTERNA_RAILWAY = os.getenv("DATABASE_PUBLIC_URL")
+    if URL_EXTERNA_RAILWAY:
         DATABASES['default'] = dj_database_url.parse(URL_EXTERNA_RAILWAY)
 
 # Password validation
