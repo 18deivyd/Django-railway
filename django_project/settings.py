@@ -11,7 +11,11 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,6 +88,16 @@ DATABASES = {
     }
 }
 
+# Si el proyecto corre en Railway, usará las variables internas automáticamente
+if 'RAILWAY_ENVIRONMENT_NAME' in os.environ:
+    DATABASES['default'] = dj_database_url.config(default=os.getenv('DATABASE_URL'))
+else:
+    # SI ESTÁS EN TU PC: Pegas aquí tu URL externa temporalmente para hacer pruebas
+    # Reemplaza el texto de abajo por el 'DATABASE_PUBLIC_URL' que copiaste de Railway
+    URL_EXTERNA_RAILWAY = "tu_DATABASE_PUBLIC_URL_aqui"
+    
+    if URL_EXTERNA_RAILWAY != "tu_DATABASE_PUBLIC_URL_aqui":
+        DATABASES['default'] = dj_database_url.parse(URL_EXTERNA_RAILWAY)
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
