@@ -88,14 +88,10 @@ DATABASES = {
     }
 }
 
-# Si el proyecto corre en Railway, usará las variables internas automáticamente
 if 'RAILWAY_ENVIRONMENT_NAME' in os.environ:
-    DATABASES['default'] = dj_database_url.config(default=os.getenv('DATABASE_URL'))
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 else:
-    # SI ESTÁS EN TU PC: Pegas aquí tu URL externa temporalmente para hacer pruebas
-    # Reemplaza el texto de abajo por el 'DATABASE_PUBLIC_URL' que copiaste de Railway
     URL_EXTERNA_RAILWAY = "tu_DATABASE_PUBLIC_URL_aqui"
-    
     if URL_EXTERNA_RAILWAY != "tu_DATABASE_PUBLIC_URL_aqui":
         DATABASES['default'] = dj_database_url.parse(URL_EXTERNA_RAILWAY)
 
@@ -144,6 +140,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-ALLOWED_HOSTS = ['localhost','django-railway-production-4be4.up.railway.app']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    'django-railway-production-4be4.up.railway.app',
+    '.railway.app'
+]
 
 CSRF_TRUSTED_ORIGINS = ['http://*', 'https://django-railway-production-4be4.up.railway.app']
